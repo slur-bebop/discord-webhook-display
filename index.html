@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <title>Discord Webhook Display</title>
+  <style>
+    body {
+      margin: 0;
+      background: #0d1117;
+      color: white;
+      font-family: "Segoe UI", sans-serif;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+      font-size: 6vw;
+    }
+    #loading {
+      font-size: 2vw;
+      opacity: 0.6;
+      position: absolute;
+      bottom: 5%;
+    }
+  </style>
+</head>
+<body>
+  <div id="message">💬 Waiting for message...</div>
+  <div id="loading"></div>
+
+  <script>
+    const msg = document.getElementById("message");
+    const loading = document.getElementById("loading");
+
+    const protocol = location.protocol === "https:" ? "wss:" : "ws:";
+    const socket = new WebSocket(protocol + "//" + location.host);
+
+    socket.onmessage = (event) => {
+      msg.textContent = event.data;
+      loading.textContent = "";
+      setTimeout(() => {
+        msg.textContent = "";
+        loading.textContent = "loading...";
+      }, 60000); // 1 นาที
+    };
+  </script>
+</body>
+</html>
